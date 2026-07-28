@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Environment variables & secrets (NEVER commit this!)
+.env
+.env.*
+
+# Build output & TypeScript cache
+dist/
+*.tsbuildinfo
+
+# Operating system / IDE files
+.DS_Store
+.vscode/
+.idea/
