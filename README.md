@@ -17,7 +17,7 @@ An automated GitHub Action that performs AI-powered code reviews on incoming Pul
 my-code-reviewer/
 ├── .github/
 │   └── workflows/
-│       └── ai-review.yml    # GitHub Actions workflow configuration
+│       └── ai-review.yml    # GitHub Action workflow configuration
 ├── src/
 │   ├── diffParser.ts        # Parses raw git diff strings into structured objects
 │   ├── github.ts            # GitHub Octokit API integrations (fetch diff, post comment)
