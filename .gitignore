@@ -9,7 +9,7 @@ node_modules/
 #dist/
 *.tsbuildinfo
 
-# Operating system / IDE files
+# Operating systems / IDE files
 .DS_Store
 .vscode/
 .idea/
