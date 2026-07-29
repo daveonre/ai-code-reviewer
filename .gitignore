@@ -6,7 +6,7 @@ node_modules/
 .env.*
 
 # Build output & TypeScript cache
-dist/
+#dist/
 *.tsbuildinfo
 
 # Operating system / IDE files

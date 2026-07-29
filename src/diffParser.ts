@@ -7,13 +7,18 @@ import { FileChange, DiffHunk, HunkLine } from "./types";
 export function parseRawDiff(rawDiff: string): FileChange[] {
   const parsedFiles = parseDiff(rawDiff);
 
-  return parsedFiles.map((file) => {
+  // Derive the element type returned by parseDiff()
+  type ParsedFile = (typeof parsedFiles)[number];
+  type ParsedChunk = ParsedFile["chunks"][number];
+  type ParsedChange = ParsedChunk["changes"][number];
+
+  return parsedFiles.map((file: ParsedFile) => {
     const hunks: DiffHunk[] = [];
 
-    file.chunks.forEach((chunk) => {
+    (file.chunks || []).forEach((chunk: ParsedChunk) => {
       const lines: HunkLine[] = [];
 
-      chunk.changes.forEach((change) => {
+      (chunk.changes || []).forEach((change: ParsedChange) => {
         if (change.type === "add") {
           lines.push({
             type: "add",
@@ -38,8 +43,8 @@ export function parseRawDiff(rawDiff: string): FileChange[] {
 
     return {
       filename: file.to || file.from || "unknown",
-      additions: file.additions,
-      deletions: file.deletions,
+      additions: file.additions || 0,
+      deletions: file.deletions || 0,
       hunks,
     };
   });
