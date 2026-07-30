@@ -8,33 +8,15 @@ An automated GitHub Action that performs AI-powered code reviews on incoming Pul
 
 - **Automated PR Reviews**: Automatically fetches PR diffs and generates actionable code feedback on pull requests targeting `main`.
 - **Structured Feedback**: Categorizes findings into Critical Issues, Edge Cases/Warnings, and General Improvements.
+- **Marketplace Ready**: Plug-and-play setup for any repository with zero build or dependency setup required.
 - **Branch Protection Ready**: Built to integrate as a required status check to prevent merging unreviewed code.
 - **TypeScript & Octokit**: Built with standard GitHub Actions SDKs for fast, reliable execution.
-- **Local Fallback Testing**: Supports local dry-runs using mock diffs before deploying live.
 
 ---
 
-## 🛠️ Project Structure
+## ⚙️ Setup & Usage
 
-```text
-my-code-reviewer/
-├── .github/
-│   └── workflows/
-│       └── ai-review.yml    # GitHub Action workflow configuration
-├── src/
-│   ├── diffParser.ts        # Parses raw git diff strings into structured objects
-│   ├── github.ts            # GitHub Octokit API integrations (fetch diff, post comment)
-│   ├── index.ts             # Main entry point & execution flow
-│   ├── prompts.ts           # Formats parsed changes into AI prompts
-│   └── reviewer.ts          # Integrates with OpenAI API
-├── dist/                    # Compiled production build executed by the action
-├── package.json
-└── tsconfig.json
-```
-
----
-
-## ⚙️ Setup & Configuration
+Integrating the AI Code Reviewer into any repository takes less than two minutes.
 
 ### 1. Set Repository Secrets
 
@@ -70,25 +52,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run AI Code Reviewer
+      - name: Run Davenom AI Code Reviewer
+        uses: Davenom/ai-code-reviewer@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: node dist/index.js
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ---
 
-### 3. Enforce as a Mandatory Status Check
+### 3. Enforce as a Mandatory Status Check (Optional)
 
 To block PR merges until the AI Review workflow runs:
 
@@ -103,14 +76,49 @@ To block PR merges until the AI Review workflow runs:
 
 ---
 
-## 💻 Development & Building
+## 🛠️ Project Structure
 
-If you make modifications to the source code under `src/`, make sure to build the project before pushing so `dist/index.js` gets updated:
-
-```bash
-# Install dependencies
-npm install
-
-# Build/bundle the project to dist/
-npm run build
+```text
+ai-code-reviewer/
+├── .github/
+│   └── workflows/
+│       └── ai-review.yml    # Example workflow testing the action
+├── src/
+│   ├── diffParser.ts        # Parses raw git diff strings into structured objects
+│   ├── github.ts            # GitHub Octokit API integrations (fetch diff, post comment)
+│   ├── index.ts             # Main entry point & execution flow
+│   ├── prompts.ts           # Formats parsed changes into AI prompts
+│   └── reviewer.ts          # Integrates with OpenAI API
+├── dist/                    # Compiled production bundle executed by GitHub Actions
+├── action.yml               # Action metadata definition for GitHub Marketplace
+├── package.json
+└── tsconfig.json
 ```
+
+---
+
+## 💻 Local Development & Contributing
+
+If you want to contribute to this repository or modify the source code under `src/`:
+
+1. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Build/Bundle code:**
+   Make sure to re-bundle the source before committing changes so `dist/index.js` gets updated:
+
+   ```bash
+   npm run build
+   ```
+
+3. **Release updates:**
+   When publishing new updates, update both the semantic tag (e.g., `v1.0.1`) and move the major release tag (`v1`):
+   ```bash
+   git tag -a v1.0.1 -m "Release v1.0.1"
+   git push origin v1.0.1
+   git tag -fa v1 -m "Update v1 release pointer"
+   git push origin v1 --force
+   ```
