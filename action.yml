@@ -1,0 +1,5 @@
+name: "AI Code Reviewer"
+description: "Automated PR code reviews using OpenAI"
+runs:
+  using: "node20"
+  main: "dist/index.js"
