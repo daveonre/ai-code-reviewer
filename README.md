@@ -7,7 +7,7 @@ An automated GitHub Action that performs AI-powered code reviews on incoming Pul
 - **Automated PR Reviews**: Automatically fetches PR diffs and generates actionable code feedback.
 - **Smart Event Triggers**: Runs on both `opened` and `synchronize` (re-reviews when new commits are pushed).
 - **TypeScript & Octokit**: Built with standard GitHub Actions SDKs for fast, reliable execution.
-- **Local Fallback Testing**: Supports local dry-runs using mock diffs before deploying.
+- **Local Fallback Testing**: Support local dry-runs using mock diffs before deploying.
 
 ---
 
